@@ -1,0 +1,11 @@
+1. design data model from github_events_01.json
+    1.1 actors 
+        4 columns = id(PK), login, display, url
+    1.2 repositories
+        3 columns = id(PK), name, actor_id(FK)
+    1.3 events 
+        5 columns = id(PK), type, actor_id, repo_id(FK), create_at
+
+2. Relationship
+    2.1 actors can have many events and have many repositories.
+    2.2 repositories can have many events.
