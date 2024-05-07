@@ -8,30 +8,50 @@ PostgresConn = NewType("PostgresConn", psycopg2.extensions.connection)
 
 table_drop_events = "DROP TABLE IF EXISTS events"
 table_drop_actors = "DROP TABLE IF EXISTS actors"
+table_drop_repositories = "DROP TABLE IF EXISTS repositories"
 
 table_create_actors = """
     CREATE TABLE IF NOT EXISTS actors (
         id int,
         login text,
+        display text,
+        url text,
         PRIMARY KEY(id)
     )
 """
+
+table_create_repositories = """
+    CREATE TABLE IF NOT EXISTS repositories (
+        id int,
+        name text,
+        actor_id int,
+        PRIMARY KEY (id),
+        CONSTRAINT fk_actor FOREIGN KEY(actor_id) REFERENCES actors(id)
+    )
+"""
+
 table_create_events = """
     CREATE TABLE IF NOT EXISTS events (
         id text,
         type text,
         actor_id int,
+        repo_id int,
+        create_at text,
         PRIMARY KEY(id),
+        CONSTRAINT fk_repo FOREIGN KEY(repo_id) REFERENCES repositories(id),
         CONSTRAINT fk_actor FOREIGN KEY(actor_id) REFERENCES actors(id)
     )
 """
 
 create_table_queries = [
     table_create_actors,
+    table_create_repositories,
     table_create_events,
+
 ]
 drop_table_queries = [
     table_drop_events,
+    table_drop_repositories,
     table_drop_actors,
 ]
 
